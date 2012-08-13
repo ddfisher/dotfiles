@@ -1,0 +1,8 @@
+[Animation]
+Frames=0
+
+[Desktop Entry]
+DefaultProfile=Shell.profile
+
+[Shortcuts]
+new-session=Shift+Up
