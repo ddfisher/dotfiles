@@ -1,0 +1,11 @@
+[user]
+	name = David Fisher
+	email = ddf1991@gmail.com
+[color]
+	ui = true
+[alias]
+	lol = log --oneline --graph --decorate
+[core]
+	editor = vim
+[merge]
+	tool = vimdiff
