@@ -1,6 +1,6 @@
 [Appearance]
-ColorScheme=Linux
-Font=DejaVu Sans Mono,12,-1,5,50,0,0,0,0,0
+ColorScheme=GreenOnBlack
+Font=DejaVu Sans Mono,11,-1,5,50,0,0,0,0,0
 
 [General]
 Icon=utilities-terminal

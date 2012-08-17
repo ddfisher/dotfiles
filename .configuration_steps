@@ -1,0 +1,12 @@
+A) Setup vim
+  1) git clone http://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+  2) :BundleInstall in vim
+  3) mkdir ~/.vim/undo
+  4) compile command-t
+    * cd ~/.vim/bundle/Command-T/ruby/command-t
+    * ruby extconf.rb
+    * make
+  5) set up haskell plugin
+    * cd ~/.vim/bundle/vimproc
+    * make -f [appropriate makefile]
+    * cabal install ghc-mod

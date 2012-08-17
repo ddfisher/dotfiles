@@ -252,6 +252,7 @@ Bundle "https://github.com/eagletmt/ghcmod-vim"
 " general completion
 Bundle "https://github.com/Shougo/neocomplcache"
 Bundle "https://github.com/ujihisa/neco-ghc"
+let g:neocomplcache_enable_at_startup = 1
 
 " Haskell
 " Bundle "https://github.com/ehamberg/haskellmode-vim.git"
