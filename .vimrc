@@ -253,43 +253,33 @@ Bundle "https://github.com/eagletmt/ghcmod-vim"
 Bundle "https://github.com/Shougo/neocomplcache"
 Bundle "https://github.com/ujihisa/neco-ghc"
 let g:neocomplcache_enable_at_startup = 1
+let g:neocomplcache_enable_ignore_case = 1
+let g:neocomplcache_enable_smart_case = 1
 
-" Haskell
-" Bundle "https://github.com/ehamberg/haskellmode-vim.git"
-" let g:haddock_browser = "open"
-" let g:haddock_browser_callformat = "%s %s"
+" Alignment
+Bundle "https://github.com/godlygeek/tabular"
+" AddTabularPattern first_equals /^[^=]*\zs=
+autocmd BufEnter *.hs :AddTabularPattern! equality / = /l0
 
-" function! EnableHlint()
-"     if exists("hlint")
-"       finish
-"     endif
-"     let current_compiler = "hlint"
+" syntax checking
+Bundle "https://github.com/scrooloose/syntastic"
+let g:syntastic_mode_map = { 'mode': 'passive',
+                           \ 'active_filetypes': [],
+                           \ 'passive_filetypes': [] }
 
-"     let s:cpo_save = &cpo
-"     set cpo-=C
+" type insertion, haddock lookup
+Bundle "https://github.com/ehamberg/haskellmode-vim.git"
+let g:haddock_browser = "open"
+let g:haddock_indexfiledir = "~/.vim/"
+autocmd BufEnter *.hs :compiler ghc
+let g:haddock_browser_callformat = "%s file://%s"
 
-"     setlocal errorformat=%f:%l:%c:\ %t%*[a-zA-Z]:\ %m
-"     setlocal makeprg=hlint\ %
-
-"     " ensure shellpipe is set to default (might be changed by 
-"     " compiler/ghc.vim)
-"     setlocal shellpipe=>
-
-"     let &cpo = s:cpo_save
-"     unlet s:cpo_save
-" endfunction
-" autocmd BufEnter *.hs :call EnableHlint()
-" autocmd Bufenter *.hs compiler ghc
-
-
-" Bundle "hlint"
-
-" function! SetToCabalBuild()
-"   if glob("*.cabal") != ''
-"     set makeprg=cabal\ build
-"   endif
-" endfunction
-" autocmd BufEnter *.hs,*.lhs :call SetToCabalBuild()
+" indent guides
+Bundle "https://github.com/nathanaelkane/vim-indent-guides"
+" let g:indent_guides_guide_size = 1
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=232
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=234
 
 " using conceal for python
 " cute, but probably not good

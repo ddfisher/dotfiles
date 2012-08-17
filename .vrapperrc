@@ -1,0 +1,6 @@
+imap jk <esc>
+vmap ;<SPACE> gc
+nmap ;<SPACE> gcc
+
+set hlsearch
+set incsearch
