@@ -5,6 +5,7 @@
 	ui = true
 [alias]
 	lol = log --oneline --graph --decorate
+  unadd = reset --
 [core]
 	editor = vim
 [merge]
