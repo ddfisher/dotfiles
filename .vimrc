@@ -284,3 +284,5 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=234
 " using conceal for python
 " cute, but probably not good
 Bundle "https://github.com/ehamberg/vim-cute-python"
+
+Bundle "sudo.vim"
