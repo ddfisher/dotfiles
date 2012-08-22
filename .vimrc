@@ -1,3 +1,8 @@
+" David Fisher's vimrc
+" currenty extremely disorganized due to rapid addition of many plugins
+" will be cleaned up presently
+
+
 " vundle
 " run this for initial vundle setup:
 " git clone http://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
