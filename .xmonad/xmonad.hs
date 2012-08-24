@@ -27,7 +27,7 @@ main = xmonad $ kde4Config
           { modMask = mod4Mask
           , startupHook = spawn "xcompmgr"  >> spawn "killall krunner" >> spawn "krunner" -- start xcompmgr for opacity; restart krunner to fix strange problem
           , manageHook = ((className =? "krunner") >>= return . not --> manageHook kde4Config)
-                          <+> (kdeOverride --> doFloat) 
+                          -- <+> (kdeOverride --> doFloat) 
                           <+> myManageHook
           , workspaces = myWorkspaces
           , layoutHook = myLayoutHook
@@ -39,6 +39,7 @@ main = xmonad $ kde4Config
           `additionalKeys`
           [ ((mod4Mask, xK_grave), kill) -- Meta-` closes focused window
           , ((mod4Mask, xK_g), goToSelected defaultGSConfig) -- GridSelect
+          , ((mod4Mask, xK_c), spawn "google-chrome") -- GridSelect
 
           , ((mod4Mask, xK_k), focusUp) -- using BoringWindows to skip focusing minimized windows
           , ((mod4Mask, xK_j), focusDown)
@@ -57,7 +58,7 @@ main = xmonad $ kde4Config
           ]
 
 myManageHook = composeAll . concat $
-  [ [ className =? c --> doFloat | c <- ["MPlayer", "Gimp", "Klipper"] ] ]
+  [ [ className =? c --> doFloat | c <- ["MPlayer", "Gimp", "Klipper", "Plasma-desktop"] ] ]
 
 -- magic from the internet: may or may not be useful
 kdeOverride :: Query Bool
