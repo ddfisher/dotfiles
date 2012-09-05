@@ -19,7 +19,9 @@ call vundle#rc()
 " required! 
 Bundle 'gmarik/vundle'
 Bundle 'https://github.com/gmarik/ingretu.git'
-colorscheme ingretu
+Bundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
+" colorscheme ingretu
+colorscheme Tomorrow-Night-Bright
 
 set rtp+=~/go/misc/vim
 filetype plugin indent on
