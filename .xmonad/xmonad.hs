@@ -1,4 +1,5 @@
 import XMonad
+import qualified XMonad.StackSet as W
 import XMonad.Config.Kde
 import XMonad.Config.Desktop
 
@@ -13,9 +14,11 @@ import XMonad.Util.WindowProperties (getProp32s)
 
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageHelpers
 
 import XMonad.Actions.GridSelect
 import XMonad.Actions.CycleWS
+import XMonad.Actions.UpdateFocus
 
 
 myWorkspaces :: [String]
@@ -25,7 +28,7 @@ myLayoutHook = desktopLayoutModifiers $ mkToggle (FULL ?? EOT) $ boringWindows $
 
 main = xmonad $ kde4Config
           { modMask = mod4Mask
-          , startupHook = spawn "xcompmgr"  >> spawn "killall krunner" >> spawn "krunner" -- start xcompmgr for opacity; restart krunner to fix strange problem
+          , startupHook = spawn "xcompmgr" -- start xcompmgr for opacity
           , manageHook = ((className =? "krunner") >>= return . not --> manageHook kde4Config)
                           -- <+> (kdeOverride --> doFloat) 
                           <+> myManageHook
@@ -37,9 +40,10 @@ main = xmonad $ kde4Config
           , borderWidth = 0
           }
           `additionalKeys`
-          [ ((mod4Mask, xK_grave), kill) -- Meta-` closes focused window
+          [ ((mod4Mask, xK_grave), kill) -- closes focused window
+          , ((mod4Mask, xK_Escape), spawn "~/scripts/silent_lock.bash") -- turn off screen and lock
           , ((mod4Mask, xK_g), goToSelected defaultGSConfig) -- GridSelect
-          , ((mod4Mask, xK_c), spawn "google-chrome") -- GridSelect
+          , ((mod4Mask, xK_c), spawn "google-chrome") -- Open Chrome
 
           , ((mod4Mask, xK_k), focusUp) -- using BoringWindows to skip focusing minimized windows
           , ((mod4Mask, xK_j), focusDown)
@@ -55,10 +59,16 @@ main = xmonad $ kde4Config
           , ((mod4Mask, xK_Left), prevWS) -- go one workspace left
           , ((mod4Mask .|. shiftMask, xK_Right), shiftToNext >> nextWS) -- move window one workspace right and follow it
           , ((mod4Mask .|. shiftMask, xK_Left), shiftToPrev >> prevWS) -- move window one workspace left and follow it
+
+          -- volume adjustment
+          , ((mod4Mask, xK_bracketleft), spawn "amixer -- set Master playback 5%-")
+          , ((mod4Mask, xK_bracketright), spawn "amixer -- set Master playback 5%+")
           ]
 
 myManageHook = composeAll . concat $
-  [ [ className =? c --> doFloat | c <- ["MPlayer", "Gimp", "Klipper", "Plasma-desktop"] ] ]
+  [ [ className =? c --> doFloat | c <- ["MPlayer", "Gimp", "Klipper", "Plasma-desktop"] ]
+  , [isFullscreen --> doFullFloat]
+  ]
 
 -- magic from the internet: may or may not be useful
 kdeOverride :: Query Bool
