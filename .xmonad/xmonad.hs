@@ -15,10 +15,13 @@ import XMonad.Util.WindowProperties (getProp32s)
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.EwmhDesktops
 
 import XMonad.Actions.GridSelect
 import XMonad.Actions.CycleWS
 import XMonad.Actions.UpdateFocus
+
+import XMonad.Hooks.SetWMName
 
 
 myWorkspaces :: [String]
@@ -32,6 +35,7 @@ main = xmonad $ kde4Config
           , manageHook = ((className =? "krunner") >>= return . not --> manageHook kde4Config)
                           -- <+> (kdeOverride --> doFloat) 
                           <+> myManageHook
+          , handleEventHook = handleEventHook kde4Config <+> fullscreenEventHook
           , workspaces = myWorkspaces
           , layoutHook = myLayoutHook
           , logHook = fadeInactiveLogHook 0.85 <+> logHook kde4Config -- set unfocused windows to 85% opacity (good with dark backgrounds)
