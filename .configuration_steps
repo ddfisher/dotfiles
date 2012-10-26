@@ -10,3 +10,4 @@ A) Setup vim
     * cd ~/.vim/bundle/vimproc
     * make -f [appropriate makefile]
     * cabal install ghc-mod
+    * cabal install lushtags

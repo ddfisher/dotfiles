@@ -289,6 +289,12 @@ let g:haddock_indexfiledir = "~/.vim/"
 autocmd BufEnter *.hs :compiler ghc
 let g:haddock_browser_callformat = "%s file://%s"
 
+" tags
+Bundle "https://github.com/majutsushi/tagbar"
+Bundle "https://github.com/bitc/lushtags"
+let g:tagbar_compact = 1
+nnoremap <silent> <Leader>' :TagbarToggle<CR>
+
 " indent guides
 Bundle "https://github.com/nathanaelkane/vim-indent-guides"
 " let g:indent_guides_guide_size = 1
