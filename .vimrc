@@ -259,7 +259,9 @@ Bundle "https://github.com/eagletmt/ghcmod-vim"
 " general completion
 Bundle "https://github.com/Shougo/neocomplcache"
 Bundle "https://github.com/ujihisa/neco-ghc"
-let g:neocomplcache_enable_at_startup = 1
+
+autocmd BufEnter *.hs :NeoComplCacheEnable
+" let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_ignore_case = 1
 let g:neocomplcache_enable_smart_case = 1
 
