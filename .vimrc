@@ -202,6 +202,7 @@ Bundle "https://github.com/tpope/vim-abolish.git"
 Bundle "https://github.com/tpope/vim-commentary.git"
 nmap <Leader><Space> \\\
 vmap <Leader><Space> \\
+autocmd FileType haskell :setlocal commentstring=--\ %s
 
 " makes '.' work with more plugins
 Bundle "https://github.com/tpope/vim-repeat.git"
@@ -255,6 +256,7 @@ highlight Special ctermfg=45
 " haskell
 Bundle "https://github.com/Shougo/vimproc"
 Bundle "https://github.com/eagletmt/ghcmod-vim"
+nnoremap <silent> <Leader>g :GhcModCheck<CR>
 
 " general completion
 Bundle "https://github.com/Shougo/neocomplcache"
@@ -274,8 +276,10 @@ function! s:my_cr_function()
 endfunction
 
 
-" test
-Bundle "https://github.com/adinapoli/cumino"
+" GHCi Interaction
+Bundle "https://github.com/vim-scripts/Superior-Haskell-Interaction-Mode-SHIM"
+autocmd FileType haskell :nnoremap <buffer> <Leader>r :w<CR>:GhciFile<CR>
+autocmd FileType haskell :vnoremap <buffer> <Leader>r :GhciRange<CR>
 
 " Alignment
 Bundle "https://github.com/godlygeek/tabular"
@@ -313,3 +317,6 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=234
 Bundle "https://github.com/ehamberg/vim-cute-python"
 
 Bundle "sudo.vim"
+
+" clojure
+Bundle "https://github.com/vim-scripts/VimClojure"
