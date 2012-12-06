@@ -3,6 +3,7 @@ A) Setup vim
   2) :BundleInstall in vim
   3) mkdir ~/.vim/undo
   4) compile command-t
+    * sudo apt-get install ruby1.8 ruby1.8-dev
     * cd ~/.vim/bundle/Command-T/ruby/command-t
     * ruby extconf.rb
     * make
