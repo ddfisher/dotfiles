@@ -320,3 +320,7 @@ Bundle "sudo.vim"
 
 " clojure
 Bundle "https://github.com/vim-scripts/VimClojure"
+
+" switch to and from header files
+Bundle "https://github.com/derekwyatt/vim-fswitch"
+nmap <Leader>h :FSHere<CR>

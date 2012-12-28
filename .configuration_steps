@@ -12,3 +12,5 @@ A) Setup vim
     * make -f [appropriate makefile]
     * cabal install ghc-mod
     * cabal install lushtags
+  6) other installs
+    * sudo apt-get install exuberant-ctags
