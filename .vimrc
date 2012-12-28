@@ -77,8 +77,6 @@ set tabpagemax=100
 
 set hlsearch
 set incsearch
-nnoremap / /\v
-vnoremap / /\v
 nnoremap <Leader>n :nohlsearch<CR>
 set gdefault
 
@@ -326,3 +324,7 @@ Bundle "https://github.com/vim-scripts/VimClojure"
 
 " rust
 Bundle "https://github.com/graydon/rust/tree/master/src/etc/vim"
+
+" switch to and from header files
+Bundle "https://github.com/derekwyatt/vim-fswitch"
+nmap <Leader>h :FSHere<CR>
