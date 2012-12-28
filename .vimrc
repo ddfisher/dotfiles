@@ -50,7 +50,7 @@ command! -nargs=1 Silent
             \ | execute ':silent '.<q-args>
              \ | execute ':redraw!'
 
-set switchbuf=usetab
+set switchbuf=usetab,newtab
 command! -nargs=* -complete=shellcmd R execute "silent bo" bufnr("<Output>",1)."sb"
       \ | resize 10 
       \ | setlocal buftype=nofile bufhidden=hide noswapfile
@@ -214,9 +214,9 @@ autocmd BufEnter * :set formatoptions-=o
 " Bundle "https://github.com/scrooloose/syntastic"
 
 " Bundle "LaTeX-Suite-aka-Vim-LaTeX"
-autocmd BufEnter *.tex :set cole=2
+" autocmd BufEnter *.tex :set cole=2
 autocmd BufEnter *.tex :hi Conceal ctermbg=black
-set cocu=nc
+" set cocu=nc
 
 Bundle "actionscript.vim"
 au BufNewFile,BufRead *.as  setf actionscript
@@ -299,6 +299,9 @@ let g:haddock_indexfiledir = "~/.vim/"
 autocmd BufEnter *.hs :compiler ghc
 let g:haddock_browser_callformat = "%s file://%s"
 
+" vim2hs (BIG)
+" Bundle "https://github.com/dag/vim2hs"
+
 " tags
 Bundle "https://github.com/majutsushi/tagbar"
 Bundle "https://github.com/bitc/lushtags"
@@ -320,3 +323,6 @@ Bundle "sudo.vim"
 
 " clojure
 Bundle "https://github.com/vim-scripts/VimClojure"
+
+" rust
+Bundle "https://github.com/graydon/rust/tree/master/src/etc/vim"
