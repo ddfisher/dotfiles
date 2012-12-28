@@ -77,8 +77,6 @@ set tabpagemax=100
 
 set hlsearch
 set incsearch
-nnoremap / /\v
-vnoremap / /\v
 nnoremap <Leader>n :nohlsearch<CR>
 set gdefault
 
