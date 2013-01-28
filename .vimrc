@@ -122,7 +122,7 @@ set ruler "show line/col in bottom row
 "Split line(opposite to S-J joining line) 
 " nnoremap <silent> <C-J> gEa<CR><ESC>ew
 
-Bundle "https://github.com/kien/rainbow_parentheses.vim.git"
+Bundle 'https://github.com/kien/rainbow_parentheses.vim.git'
 let g:rbpt_colorpairs = [
     \ ['green',       'green'],
     \ ['magenta',     'magenta'],
@@ -156,16 +156,16 @@ nnoremap ,l :set number! \| set number?<CR>
 nnoremap ,g :silent execute '!grep -r --color=always <cword> . \| less -R' \| redraw!<CR>
 nnoremap ,r :if &autowrite \| silent w \| endif \| execute "R" b:runprg <CR>
 
-Bundle "Align"
+Bundle 'Align'
 " AlignMaps#Equals() changed slightly - now uses: AlignCtrl mWp1P1=l =
 vmap ,a \t=
 
-Bundle "YankRing.vim"
+Bundle 'YankRing.vim'
 nnoremap <silent> yr :YRShow<CR>
 
-Bundle "ZoomWin"
-Bundle "fugitive.vim"
-Bundle "EasyMotion"
+Bundle 'ZoomWin'
+Bundle 'fugitive.vim'
+Bundle 'EasyMotion'
 
 
 " very experimental
@@ -184,42 +184,42 @@ function! HasPaste()
 endfunction
 
 " better surrounding with e.g. parens
-Bundle "https://github.com/tpope/vim-surround.git"
+Bundle 'https://github.com/tpope/vim-surround.git'
 nmap ,2 ys2w
 nmap ,3 ys3w
 nmap ,4 ys4w
 
 " extends CTRL-X/CTRL-A to work with dates and some other things (like ordinals!)
-Bundle "https://github.com/tpope/vim-speeddating.git"
+Bundle 'https://github.com/tpope/vim-speeddating.git'
 
 " better search/replace (in certain cases), allows conversion between
 " camelCase and snake_case
-Bundle "https://github.com/tpope/vim-abolish.git"
+Bundle 'https://github.com/tpope/vim-abolish.git'
 
 " simpler comment plugin
-Bundle "https://github.com/tpope/vim-commentary.git"
+Bundle 'https://github.com/tpope/vim-commentary.git'
 nmap <Leader><Space> \\\
 vmap <Leader><Space> \\
 autocmd FileType haskell :setlocal commentstring=--\ %s
 
 " makes '.' work with more plugins
-Bundle "https://github.com/tpope/vim-repeat.git"
+Bundle 'https://github.com/tpope/vim-repeat.git'
 
 " don't continue the comment from the previous line on 'o'
 autocmd BufEnter * :set formatoptions-=o
 
 " automatic syntax checking
-" Bundle "https://github.com/scrooloose/syntastic"
+" Bundle 'https://github.com/scrooloose/syntastic'
 
-" Bundle "LaTeX-Suite-aka-Vim-LaTeX"
+" Bundle 'LaTeX-Suite-aka-Vim-LaTeX'
 " autocmd BufEnter *.tex :set cole=2
 autocmd BufEnter *.tex :hi Conceal ctermbg=black
 " set cocu=nc
 
-Bundle "actionscript.vim"
+Bundle 'actionscript.vim'
 au BufNewFile,BufRead *.as  setf actionscript
 
-" Bundle "https://github.com/jpalardy/vim-slime.git"
+" Bundle 'https://github.com/jpalardy/vim-slime.git'
 let g:slime_target = "tmux"
 
 " Google Go
@@ -236,14 +236,14 @@ autocmd BufEnter *.rb :let b:runprg='ruby #'
 " let g:ctrlp_custom_ignore = {
 "   \ 'dir':  '\.git$\|\.hg$\|\.svn$',
 "   \ }
-" Bundle "ctrlp.vim"
+" Bundle 'ctrlp.vim'
 " let g:ctrlp_map = '<c-t>'
 
-Bundle "https://github.com/wincent/Command-T"
+Bundle 'https://github.com/wincent/Command-T'
 let g:CommandTMatchWindowReverse = 1
 nmap <C-t> :CommandT<CR>
 
-Bundle "https://github.com/kchmck/vim-coffee-script"
+Bundle 'https://github.com/kchmck/vim-coffee-script'
 au BufNewFile,BufRead *.coffee set filetype=coffee
 
 autocmd BufEnter *.flex :setlocal filetype=lex
@@ -252,13 +252,13 @@ highlight Special ctermfg=45
 
 " ========= test =======
 " haskell
-Bundle "https://github.com/Shougo/vimproc"
-Bundle "https://github.com/eagletmt/ghcmod-vim"
+Bundle 'https://github.com/Shougo/vimproc'
+Bundle 'https://github.com/eagletmt/ghcmod-vim'
 nnoremap <silent> <Leader>g :GhcModCheck<CR>
 
 " general completion
-Bundle "https://github.com/Shougo/neocomplcache"
-Bundle "https://github.com/ujihisa/neco-ghc"
+Bundle 'https://github.com/Shougo/neocomplcache'
+Bundle 'https://github.com/ujihisa/neco-ghc'
 
 autocmd BufEnter *.hs :NeoComplCacheEnable
 " let g:neocomplcache_enable_at_startup = 1
@@ -275,39 +275,39 @@ endfunction
 
 
 " GHCi Interaction
-Bundle "https://github.com/vim-scripts/Superior-Haskell-Interaction-Mode-SHIM"
+Bundle 'https://github.com/vim-scripts/Superior-Haskell-Interaction-Mode-SHIM'
 autocmd FileType haskell :nnoremap <buffer> <Leader>r :w<CR>:GhciFile<CR>
 autocmd FileType haskell :vnoremap <buffer> <Leader>r :GhciRange<CR>
 
 " Alignment
-Bundle "https://github.com/godlygeek/tabular"
+Bundle 'https://github.com/godlygeek/tabular'
 " AddTabularPattern first_equals /^[^=]*\zs=
 autocmd BufEnter *.hs :AddTabularPattern! equality / = /l0
 
 " syntax checking
-Bundle "https://github.com/scrooloose/syntastic"
+Bundle 'https://github.com/scrooloose/syntastic'
 let g:syntastic_mode_map = { 'mode': 'passive',
                            \ 'active_filetypes': [],
                            \ 'passive_filetypes': [] }
 
 " type insertion, haddock lookup
-Bundle "https://github.com/ehamberg/haskellmode-vim.git"
+Bundle 'https://github.com/ehamberg/haskellmode-vim.git'
 let g:haddock_browser = "open"
 let g:haddock_indexfiledir = "~/.vim/"
 autocmd BufEnter *.hs :compiler ghc
 let g:haddock_browser_callformat = "%s file://%s"
 
 " vim2hs (BIG)
-" Bundle "https://github.com/dag/vim2hs"
+" Bundle 'https://github.com/dag/vim2hs'
 
 " tags
-Bundle "https://github.com/majutsushi/tagbar"
-Bundle "https://github.com/bitc/lushtags"
+Bundle 'https://github.com/majutsushi/tagbar'
+Bundle 'https://github.com/bitc/lushtags'
 let g:tagbar_compact = 1
 nnoremap <silent> <Leader>' :TagbarToggle<CR>
 
 " indent guides
-Bundle "https://github.com/nathanaelkane/vim-indent-guides"
+Bundle 'https://github.com/nathanaelkane/vim-indent-guides'
 " let g:indent_guides_guide_size = 1
 let g:indent_guides_auto_colors = 0
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=232
@@ -315,20 +315,20 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=234
 
 " using conceal for python
 " cute, but probably not good
-Bundle "https://github.com/ehamberg/vim-cute-python"
+Bundle 'https://github.com/ehamberg/vim-cute-python'
 
-Bundle "sudo.vim"
+Bundle 'sudo.vim'
 
 " clojure
-Bundle "https://github.com/vim-scripts/VimClojure"
+Bundle 'https://github.com/vim-scripts/VimClojure'
 
 " rust
-Bundle "https://github.com/graydon/rust/tree/master/src/etc/vim"
+Bundle 'https://github.com/graydon/rust/tree/master/src/etc/vim'
 
 " switch to and from header files
-Bundle "https://github.com/vim-scripts/a.vim"
+Bundle 'https://github.com/vim-scripts/a.vim'
 nmap <Leader>h :A<CR>
 nmap <Leader>H :AV<CR>
 
 " experimental
-Bundle "https://github.com/goldfeld/vim-seek"
+Bundle 'https://github.com/goldfeld/vim-seek'
