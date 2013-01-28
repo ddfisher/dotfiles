@@ -328,3 +328,7 @@ Bundle "https://github.com/graydon/rust/tree/master/src/etc/vim"
 " switch to and from header files
 Bundle "https://github.com/derekwyatt/vim-fswitch"
 nmap <Leader>h :FSHere<CR>
+
+" experimental
+Bundle "https://github.com/vim-scripts/a.vim"
+Bundle "https://github.com/goldfeld/vim-seek"
