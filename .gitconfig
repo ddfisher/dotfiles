@@ -6,6 +6,9 @@
 [alias]
 	lol = log --oneline --graph --decorate
   unadd = reset --
+  mark = tag -f marked
+  inspect = !vim -c \"tabdo Gdiff marked\" -p `git diff --name-only marked`
+  pull-inspect = !git mark && git pull && git inspect
 [core]
 	editor = vim
 [merge]
