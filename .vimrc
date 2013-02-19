@@ -21,7 +21,6 @@ Bundle 'gmarik/vundle'
 Bundle 'https://github.com/gmarik/ingretu.git'
 Bundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 colorscheme ingretu
-" colorscheme Tomorrow-Night-Bright
 
 set rtp+=~/go/misc/vim
 filetype plugin indent on
@@ -29,28 +28,13 @@ filetype plugin indent on
 let mapleader = ";"
 let g:mapleader = ";"
 
-function TextEdit()
-    setlocal formatoptions=1tcaw
-    setlocal linebreak
-    setlocal wrap
-    setlocal nolist
-    setlocal noexpandtab
-    " nnoremap ^ g^
-    " nnoremap $ g$
-    " nnoremap j gj
-    " nnoremap k gk
-    " vnoremap j gj
-    " vnoremap k gk
-    set textwidth=98
-endfunction
-
 set mouse=a
+set switchbuf=usetab,newtab
 
 command! -nargs=1 Silent
             \ | execute ':silent '.<q-args>
              \ | execute ':redraw!'
 
-set switchbuf=usetab,newtab
 command! -nargs=* -complete=shellcmd R execute "silent bo" bufnr("<Output>",1)."sb"
       \ | resize 10 
       \ | setlocal buftype=nofile bufhidden=hide noswapfile
@@ -58,12 +42,6 @@ command! -nargs=* -complete=shellcmd R execute "silent bo" bufnr("<Output>",1)."
       \ | execute 'r !<args>'
       \ | wincmd p
       \ | echo "<args>"
-
-" if has('autocmd')
-"     au BufRead,BufNewFile *.txt call TextEdit()
-"     au BufRead,BufNewFile *.markdown call TextEdit()
-"     au BufRead,BufNewFile *.tex call TextEdit()
-" endif
 
 syntax enable
 set tabstop=2
@@ -75,10 +53,6 @@ imap jk <esc>
 set title
 set tabpagemax=100
 
-set hlsearch
-set incsearch
-nnoremap <Leader>n :nohlsearch<CR>
-set gdefault
 
 nnoremap <Leader>q gqip
 
@@ -86,41 +60,41 @@ autocmd QuickFixCmdPost * :cw
 
 "--- experimental ---
 "general
-set history=256  " Number of things to remember in history.
+set history=256  " Number of things to remember in history (ex command, search, etc)
 set timeoutlen=500
 set showcmd
 
 " show tab-completion menu, but make left and right arrow keys always move the
 " cursor
-set wildmenu
 set wildmode=list:longest
-cnoremap <Left> <Space><BS><Left>
-cnoremap <Right> <Space><BS><Right>
 
 "persistent undo
 set undodir=~/.vim/undo
 set undofile
 
 "searching
+set hlsearch
 set smartcase
 set incsearch
+nnoremap <Leader>n :nohlsearch<CR>
+set gdefault " makes all-occurrences substitution the default
+
  "tabs
-set smarttab "delete at the beginning of the line deletes shiftwidth spaces
-"C stuff
-set showmatch "briefly shows matching parens, etc when closed
+set smarttab " delete at the beginning of the line deletes shiftwidth spaces
+
+" C stuff
+set showmatch " briefly shows matching parens, etc when closed
 set matchtime=1
 set foldmethod=syntax
-set foldnestmax=1 "don't fold more than one level
+set foldnestmax=1 " don't fold more than one level
 set foldlevelstart=1
+
 "split rules
 set splitbelow
 set splitright
 
 set vb t_vb=  "turn off beep
 set ruler "show line/col in bottom row
-
-"Split line(opposite to S-J joining line) 
-" nnoremap <silent> <C-J> gEa<CR><ESC>ew
 
 Bundle 'https://github.com/kien/rainbow_parentheses.vim.git'
 let g:rbpt_colorpairs = [
@@ -196,7 +170,7 @@ Bundle 'https://github.com/tpope/vim-speeddating.git'
 " camelCase and snake_case
 Bundle 'https://github.com/tpope/vim-abolish.git'
 
-" simpler comment plugin
+" comment plugins
 Bundle 'https://github.com/tpope/vim-commentary.git'
 nmap <Leader><Space> \\\
 vmap <Leader><Space> \\
