@@ -313,7 +313,7 @@ nmap <Leader>H :AV<CR>
 Bundle 'https://github.com/goldfeld/vim-seek'
 
 " Scala
-Bundle 'https://github.com/scala/scala-dist', {'rtp': 'tool-support/src/vim'}
+" Bundle 'https://github.com/scala/scala-dist', {'rtp': 'tool-support/src/vim'}
 
 " git gutter
 " Bundle 'https://github.com/airblade/vim-gitgutter'
