@@ -178,8 +178,8 @@ Bundle 'https://github.com/tpope/vim-abolish.git'
 
 " comment plugins
 Bundle 'https://github.com/tpope/vim-commentary.git'
-nmap <Leader><Space> \\\
-vmap <Leader><Space> \\
+nmap <Leader><Space> gcc
+vmap <Leader><Space> gc
 autocmd FileType haskell :setlocal commentstring=--\ %s
 
 " makes '.' work with more plugins
