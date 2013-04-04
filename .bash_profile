@@ -41,7 +41,7 @@ then {
   export EC2_PRIVATE_KEY=~/.ec2/pk-7F3CLDG5B2D73MDLCQRWUS6QLKJCRULH.pem
   export EC2_CERT=~/.ec2/cert-7F3CLDG5B2D73MDLCQRWUS6QLKJCRULH.pem
 
-  export PATH=~/.cabal/bin:/usr/local/bin:$PATH:~/web/phacility/arcanist/bin:~/ec2-api-tools/bin:/usr/local/mysql/bin/:/Users/david/go/bin
+  export PATH=~/.cabal/bin:/usr/local/bin:/usr/local/sbin:$PATH:~/web/phacility/arcanist/bin:~/ec2-api-tools/bin:/usr/local/mysql/bin:/Users/david/go/bin:/usr/local/Cellar/ruby/1.9.3-p125/bin
 
   # let less inteligently open more filetypes
   LESSOPEN="|lesspipe.sh %s"; export LESSOPEN

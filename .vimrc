@@ -130,7 +130,7 @@ nnoremap ,l :set number! \| set number?<CR>
 nnoremap ,g :silent execute '!grep -r --color=always <cword> . \| less -R' \| redraw!<CR>
 nnoremap ,r :if &autowrite \| silent w \| endif \| execute "R" b:runprg <CR>
 
-Bundle 'Align'
+Bundle 'https://github.com/vim-scripts/Align'
 " AlignMaps#Equals() changed slightly - now uses: AlignCtrl mWp1P1=l =
 vmap ,a \t=
 
@@ -143,11 +143,17 @@ Bundle 'EasyMotion'
 
 
 " very experimental
+Bundle 'https://github.com/Lokaltog/vim-powerline'
+set laststatus=2   " Always show the statusline
+set encoding=utf-8 " Necessary to show Unicode glyphs
+let g:Powerline_symbols = 'unicode'
+let g:Powerline_dividers_override = ['>>', '>', '<<', '<']
+
 " Don't always show the statusline
-set laststatus=1
+" set laststatus=1
 
 " Format the statusline
-set statusline=%<%f%h%m%r%h%w\ \|\ %{strftime(\"%c\",getftime(expand(\"%:p\")))}%=%{HasPaste()}\ %l:%c/%L\ \ %P
+" set statusline=%<%f%h%m%r%h%w\ \|\ %{strftime(\"%c\",getftime(expand(\"%:p\")))}%=%{HasPaste()}\ %l:%c/%L\ \ %P
 
 function! HasPaste()
     if &paste
@@ -182,11 +188,8 @@ Bundle 'https://github.com/tpope/vim-repeat.git'
 " don't continue the comment from the previous line on 'o'
 autocmd BufEnter * :set formatoptions-=o
 
-" automatic syntax checking
-" Bundle 'https://github.com/scrooloose/syntastic'
-
-" Bundle 'LaTeX-Suite-aka-Vim-LaTeX'
-" autocmd BufEnter *.tex :set cole=2
+Bundle 'LaTeX-Suite-aka-Vim-LaTeX'
+autocmd BufEnter *.tex :set cole=2
 autocmd BufEnter *.tex :hi Conceal ctermbg=black
 " set cocu=nc
 
@@ -235,12 +238,21 @@ Bundle 'https://github.com/Shougo/neocomplcache'
 Bundle 'https://github.com/ujihisa/neco-ghc'
 
 autocmd BufEnter *.hs :NeoComplCacheEnable
-" let g:neocomplcache_enable_at_startup = 1
-let g:neocomplcache_enable_ignore_case = 1
+" Disable AutoComplPop. Comment out this line if AutoComplPop is not installed.
+" let g:acp_enableAtStartup = 0
+" Launches neocomplcache automatically on vim startup.
+let g:neocomplcache_enable_at_startup = 1
+" Use smartcase.
 let g:neocomplcache_enable_smart_case = 1
-
-let g:neocomplcache_enable_underbar_completion = 1
+" Use camel case completion.
 let g:neocomplcache_enable_camel_case_completion = 1
+" Use underscore completion.
+let g:neocomplcache_enable_underbar_completion = 1
+" Sets minimum char length of syntax keyword.
+let g:neocomplcache_min_syntax_length = 4
+
+" let g:neocomplcache_enable_fuzzy_completion = 1
+" let g:neocomplcache_fuzzy_completion_start_length = 2
 
 inoremap <expr><silent> <CR> <SID>my_cr_function()
 function! s:my_cr_function()
@@ -261,7 +273,7 @@ autocmd BufEnter *.hs :AddTabularPattern! equality / = /l0
 " syntax checking
 Bundle 'https://github.com/scrooloose/syntastic'
 let g:syntastic_mode_map = { 'mode': 'passive',
-                           \ 'active_filetypes': [],
+                           \ 'active_filetypes': ['c'],
                            \ 'passive_filetypes': [] }
 
 " type insertion, haddock lookup
@@ -287,17 +299,10 @@ let g:indent_guides_auto_colors = 0
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=232
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=234
 
-" using conceal for python
-" cute, but probably not good
-Bundle 'https://github.com/ehamberg/vim-cute-python'
-
 Bundle 'sudo.vim'
 
 " clojure
 Bundle 'https://github.com/vim-scripts/VimClojure'
-
-" rust
-Bundle 'https://github.com/graydon/rust/tree/master/src/etc/vim'
 
 " switch to and from header files
 Bundle 'https://github.com/vim-scripts/a.vim'
@@ -306,3 +311,27 @@ nmap <Leader>H :AV<CR>
 
 " experimental
 Bundle 'https://github.com/goldfeld/vim-seek'
+
+" Scala
+Bundle 'https://github.com/scala/scala-dist', {'rtp': 'tool-support/src/vim'}
+
+" git gutter
+" Bundle 'https://github.com/airblade/vim-gitgutter'
+" highlight clear SignColumn
+
+" Bundle 'https://github.com/Valloric/YouCompleteMe'
+" let g:ycm_add_preview_to_completeopt = 0
+" let g:ycm_autoclose_preview_window_after_completion = 0
+" let g:ycm_key_invoke_completion = '<C-Y>'
+" nmap <leader>y :YcmForceCompileAndDiagnostics<CR>
+" set completeopt=menuone
+" let g:ycm_filetypes_to_completely_ignore = {
+"       \ 'notes' : 1,
+"       \ 'markdown' : 1,
+"       \ 'text' : 1,
+"       \ 'ruby' : 1,
+"       \ 'haskell' : 1,
+"       \}
+
+Bundle 'git://github.com/digitaltoad/vim-jade.git'
+Bundle 'https://github.com/timcharper/textile.vim'
