@@ -242,6 +242,8 @@ autocmd BufEnter *.hs :NeoComplCacheEnable
 " let g:acp_enableAtStartup = 0
 " Launches neocomplcache automatically on vim startup.
 let g:neocomplcache_enable_at_startup = 1
+" Don't automatically display the popup
+let g:neocomplcache_disable_auto_complete = 1
 " Use smartcase.
 let g:neocomplcache_enable_smart_case = 1
 " Use camel case completion.
@@ -313,6 +315,7 @@ nmap <Leader>H :AV<CR>
 Bundle 'https://github.com/goldfeld/vim-seek'
 
 " Scala
+Bundle 'derekwyatt/vim-scala'
 " Bundle 'https://github.com/scala/scala-dist', {'rtp': 'tool-support/src/vim'}
 
 " git gutter
@@ -335,3 +338,9 @@ Bundle 'https://github.com/goldfeld/vim-seek'
 
 Bundle 'git://github.com/digitaltoad/vim-jade.git'
 Bundle 'https://github.com/timcharper/textile.vim'
+
+Bundle "https://github.com/mileszs/ack.vim"
+
+command! -nargs=1 Hdoc !hoogle --info --color <f-args>
+nmap <Leader>k :echo system("hoogle " . shellescape(expand("<cWORD>")))<CR>
+nmap <Leader>K :echo system("hoogle --info " . shellescape(expand("<cWORD>")))<CR>
