@@ -27,6 +27,7 @@ filetype plugin indent on
 
 let mapleader = ";"
 let g:mapleader = ";"
+let maplocalleader = ","
 
 set mouse=a
 set switchbuf=usetab,newtab
@@ -50,11 +51,33 @@ set softtabstop=2
 set expandtab
 set autowrite
 imap jk <esc>
+imap Jk <esc>
+imap JK <esc>
 set title
 set tabpagemax=100
 
+function NoteEdit()
+  setlocal formatoptions=awtqnj1
+  setlocal noexpandtab
+  setlocal linebreak
+  setlocal textwidth=80
+  setlocal autoindent
+  setlocal comments=fb:-,fb:*,fb:[\ ],fb:[x],fb:[-]
+  syntax match incompleteItem "^\s*\zs\[ \]"
+  syntax match partialItem    "^\s*\zs\[-\]"
+  syntax match completeItem   "^\s*\zs\[x\]"
+
+  highlight incompleteItem ctermbg=Yellow guibg=Yellow ctermfg=52 guifg=#5f0000
+  highlight partialItem    ctermbg=Yellow guibg=Yellow ctermfg=Black guifg=Black
+  highlight completeItem   ctermbg=22 guibg=#005f00
+endfunction
+
+au BufRead,BufNewFile *.note call NoteEdit()
+
+set formatoptions+=j
 
 nnoremap <Leader>q gqip
+vnoremap <Leader>q gq
 
 autocmd QuickFixCmdPost * :cw
 
@@ -339,8 +362,11 @@ Bundle 'derekwyatt/vim-scala'
 Bundle 'git://github.com/digitaltoad/vim-jade.git'
 Bundle 'https://github.com/timcharper/textile.vim'
 
-Bundle "https://github.com/mileszs/ack.vim"
+Bundle 'https://github.com/mileszs/ack.vim'
 
 command! -nargs=1 Hdoc !hoogle --info --color <f-args>
 nmap <Leader>k :echo system("hoogle " . shellescape(expand("<cWORD>")))<CR>
 nmap <Leader>K :echo system("hoogle --info " . shellescape(expand("<cWORD>")))<CR>
+
+Bundle 'https://github.com/jceb/vim-orgmode'
+let g:org_heading_shade_leading_stars = 0

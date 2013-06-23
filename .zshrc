@@ -10,6 +10,11 @@ ZSH_THEME="david"
 
 # Example aliases
 alias zshconfig="vim ~/.zshrc"
+alias vimconfig="vim ~/.vimrc; vim +BundleInstall +qa"
+alias gitconfig="vim ~/.gitconfig"
+alias rm="rm -i"
+alias mv="mv -i"
+alias cp="cp -i"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # Set to this to use case-sensitive completion
@@ -33,7 +38,7 @@ alias zshconfig="vim ~/.zshrc"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(battery brew git git-extras haskell npm python osx screen vundle)
+plugins=(battery brew git haskell npm python osx screen vundle zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -44,6 +49,10 @@ setopt no_beep
 setopt extendedglob
 
 setopt noautomenu
+
+__git_files () { 
+    _wanted files expl 'local files' _files     
+}
 
 # function menu-expand-or-complete-and-search () {
 #   zle menu-expand-or-complete 
@@ -59,3 +68,6 @@ export EDITOR="vim"
 
 # Customize to your needs...
 export PATH=/Users/david/.cabal/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/Users/david/.cabal/bin:/usr/texbin:/Users/david/web/phacility/arcanist/bin:/Users/david/ec2-api-tools/bin:/usr/local/mysql/bin:/Users/david/go/bin:/usr/local/Cellar/ruby/1.9.3-p125/bin
+
+# OpenCV
+export PYTHONPATH="/usr/local/lib/python2.7/site-packages:$PYTHONPATH"
