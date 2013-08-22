@@ -22,7 +22,7 @@ Bundle 'https://github.com/gmarik/ingretu.git'
 Bundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 colorscheme ingretu
 
-set rtp+=~/go/misc/vim
+set runtimepath+=/usr/local/go/misc/vim
 filetype plugin indent on
 
 let mapleader = ";"
@@ -53,6 +53,8 @@ set autowrite
 imap jk <esc>
 imap Jk <esc>
 imap JK <esc>
+" Make Y more like C - no point in it being the same as yy
+nmap Y y$
 set title
 set tabpagemax=100
 
@@ -63,13 +65,13 @@ function NoteEdit()
   setlocal textwidth=80
   setlocal autoindent
   setlocal comments=fb:-,fb:*,fb:[\ ],fb:[x],fb:[-]
-  syntax match incompleteItem "^\s*\zs\[ \]"
-  syntax match partialItem    "^\s*\zs\[-\]"
-  syntax match completeItem   "^\s*\zs\[x\]"
+  syntax match incompleteItem "^\s*\[ \] \zs.*"
+  syntax match partialItem    "^\s*\[-\] \zs.*"
+  syntax match completeItem   "^\s*\[x\] \zs.*"
 
-  highlight incompleteItem ctermbg=Yellow guibg=Yellow ctermfg=52 guifg=#5f0000
-  highlight partialItem    ctermbg=Yellow guibg=Yellow ctermfg=Black guifg=Black
-  highlight completeItem   ctermbg=22 guibg=#005f00
+  highlight incompleteItem ctermfg=202
+  highlight partialItem    ctermfg=14
+  highlight completeItem   ctermfg=68
 endfunction
 
 au BufRead,BufNewFile *.note call NoteEdit()
@@ -370,3 +372,9 @@ nmap <Leader>K :echo system("hoogle --info " . shellescape(expand("<cWORD>")))<C
 
 Bundle 'https://github.com/jceb/vim-orgmode'
 let g:org_heading_shade_leading_stars = 0
+
+
+
+Bundle 'https://github.com/rosenfeld/conque-term'
+let g:ConqueTerm_CWInsert = 1
+let g:ConqueTerm_SendVisKey = ';f'
