@@ -1,63 +1,70 @@
-" David Fisher's vimrc
-" currenty extremely disorganized due to rapid addition of many plugins
-" will be cleaned up presently
-
-
-" vundle
-" run this for initial vundle setup:
-" git clone http://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
-set nocompatible
-filetype on "mac workaround
+set nocompatible                      "enable vim features
+filetype on                           "mac workaround, some strangeness happens otherwise
 filetype off
 
-" workaround needed on some systems:
-" let $GIT_SSL_NO_VERIFY = 'true'
+"Vundle Plugin Manager
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
-
-" let Vundle manage Vundle
-" required! 
 Bundle 'gmarik/vundle'
-Bundle 'https://github.com/gmarik/ingretu.git'
-Bundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
+
+filetype plugin indent on             "enable filetype detection for indents and plugins
+syntax enable                         "enable syntax highlighting
+
+Bundle 'gmarik/ingretu'
 colorscheme ingretu
 
-set runtimepath+=/usr/local/go/misc/vim
-filetype plugin indent on
-
-let mapleader = ";"
-let g:mapleader = ";"
-let maplocalleader = ","
-
-set mouse=a
-set switchbuf=usetab,newtab
-
-command! -nargs=1 Silent
-            \ | execute ':silent '.<q-args>
-             \ | execute ':redraw!'
-
-command! -nargs=* -complete=shellcmd R execute "silent bo" bufnr("<Output>",1)."sb"
-      \ | resize 10 
-      \ | setlocal buftype=nofile bufhidden=hide noswapfile
-      \ | execute "normal gg\"_dG"
-      \ | execute 'r !<args>'
-      \ | wincmd p
-      \ | echo "<args>"
-
-syntax enable
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
-set expandtab
-set autowrite
+"Use jk to exit insert mode.  Quick to type, and a NOP in normal mode.  Ignore
+"accidental capitalization.
 imap jk <esc>
 imap Jk <esc>
 imap JK <esc>
-" Make Y more like C - no point in it being the same as yy
-nmap Y y$
-set title
-set tabpagemax=100
 
+"===== General Setup =====
+let mapleader = ";"
+let g:mapleader = ";"
+let maplocalleader = ";"
+
+set title                             "have vim set terminal title
+set mouse=a                           "mouse use is occasionally convenient
+set tabpagemax=25                     "open up to this many tabs when called with -p
+set wildmode=list:longest             "enable shell-like tab completion in ex commands
+set history=1000                      "history entries to remember (ex command, search, etc)
+set timeoutlen=500                    "time in ms before partial commands time out
+set showcmd                           "show partially input commands in lower right corner
+set vb t_vb=                          "turn off beep
+set ruler                             "show line/col in bottom row
+
+"tabs
+set expandtab                         "use all spaces instead of tabs
+set tabstop=2                         "size of a tab
+set softtabstop=2                     "size of a tab when editing
+set shiftwidth=2                      "spaces to use for each autoindent
+set smarttab                          "make spaces behave more like tabs
+
+"searching
+set hlsearch                          "highlight search terms
+set ignorecase | set smartcase        "case insensitive iff no capitalization
+set incsearch                         "search incrementally as you type
+set gdefault                          "makes all-occurrences substitution the default
+nnoremap <Leader>n :nohlsearch<CR>
+
+"persistent undo
+set undodir=~/.vim/undo
+set undofile
+
+"window splitting rules
+set splitbelow                        "new windows created below the current one
+set splitright                        "new windows created to the right of the current one
+
+"slightly easier external copy/pasting
+nnoremap <Leader>p "+p
+vnoremap <Leader>y "+y
+
+"toggle spell checking
+nnoremap <Leader>s :set spell! \| set spell?<CR>
+
+"Notes
+"  some simple format, indent, and highlighting rules for note files
 function NoteEdit()
   setlocal formatoptions=awtqnj1
   setlocal noexpandtab
@@ -76,305 +83,229 @@ endfunction
 
 au BufRead,BufNewFile *.note call NoteEdit()
 
-set formatoptions+=j
+"===== General Plugins =====
+Bundle 'YankRing.vim'
+"saves previous yanks and shares them between vim processes
+"(after putting) <C-p>        replace put text with previous yank
+"(after putting) <C-n>        replace put text with next yank
+"yr                           show yank history
+nnoremap <silent> yr :YRShow<CR>
+"  make Y more like D or C
+let g:yankring_n_keys = 'D x X'
+nmap Y y$
 
+Bundle 'EasyMotion'
+"an alternative to motion repeats - a quick way to move around
+"<Leader><Leader>(any motions command)      activate easymotion with that command
+
+Bundle 'ZoomWin'
+"temporarily fullscreen a split
+"<C-w>o          toggle fullscreen
+
+Bundle 'sudo.vim'
+"use sudo for reading/writing files when opening a file prefixed with 'sudo:'
+
+Bundle 'chrisbra/Recover.vim'
+"give option to diff recovery files
+":FinishRecovery       deletes swapfile and closes diff window
+
+"===== General Programming =====
+set showmatch                         "briefly shows matching brackets when closed
+set matchtime=1                       "time for match to be shown in tenths of a second
+set autowrite                         "write file before make
+set formatoptions+=j                  "remove comment leader before joining lines
+"  don't insert comment leader when making a new line with o
+autocmd BufEnter * :set formatoptions-=o
+"  format comment paragraphs
 nnoremap <Leader>q gqip
 vnoremap <Leader>q gq
 
-autocmd QuickFixCmdPost * :cw
-
-"--- experimental ---
-"general
-set history=256  " Number of things to remember in history (ex command, search, etc)
-set timeoutlen=500
-set showcmd
-
-" show tab-completion menu, but make left and right arrow keys always move the
-" cursor
-set wildmode=list:longest
-
-"persistent undo
-set undodir=~/.vim/undo
-set undofile
-
-"searching
-set hlsearch
-set smartcase
-set incsearch
-nnoremap <Leader>n :nohlsearch<CR>
-set gdefault " makes all-occurrences substitution the default
-
- "tabs
-set smarttab " delete at the beginning of the line deletes shiftwidth spaces
-
-" C stuff
-set showmatch " briefly shows matching parens, etc when closed
-set matchtime=1
+"folding
 set foldmethod=syntax
-set foldnestmax=1 " don't fold more than one level
-set foldlevelstart=1
+set foldnestmax=1                     "only ever have one level of folds
+set foldlevelstart=1                  "start with everything visible
 
-"split rules
-set splitbelow
-set splitright
+"===== Programming Plugins =====
+Bundle 'tpope/vim-fugitive'
+"git integration
+":Gdiff     git diff the current file
+":Gblame    git blame the current file
+"a number of other commands along the same lines
 
-set vb t_vb=  "turn off beep
-set ruler "show line/col in bottom row
+Bundle 'tpope/vim-surround'
+"deals with surroundings e.g. parens, quotes, brackets, etc
+"ys(motion)(surrounding)         add (surrounding) around (motion)
+"cs(surrounding)(surrounding)    change first (surrounding) to second (surrounding)
+"ds(surrounding)                 delete innermost (surrounding)
+"<Leader>(number)(surrounding)   add (surrounding) to (number) words
+nmap <Leader>1 ys1w
+nmap <Leader>2 ys2w
+nmap <Leader>3 ys3w
+nmap <Leader>4 ys4w
 
-Bundle 'https://github.com/kien/rainbow_parentheses.vim.git'
-let g:rbpt_colorpairs = [
-    \ ['green',       'green'],
-    \ ['magenta',     'magenta'],
-    \ ['blue',        'blue'],
-    \ ['red',         'red'],
-    \ ['gray',        'gray'],
-    \ ['brown',       'brown'],
-    \ ['green',       'green'],
-    \ ['magenta',     'magenta'],
-    \ ['blue',        'blue'],
-    \ ['red',         'red'],
-    \ ['gray',        'gray'],
-    \ ['brown',       'brown'],
-    \ ['green',       'green'],
-    \ ['magenta',     'magenta'],
-    \ ['blue',        'blue'],
-    \ ['red',         'red'],
-    \ ]
+Bundle 'tpope/vim-abolish'
+"allows conversion between camelCase and snake_case, etc
+"crs       convert to snake_case
+"crc       convert to camelCase
+"cru       convert to COMMENT_CASE
 
-nnoremap <Leader>p :RainbowParenthesesToggleAll<CR>
-
-"Compiling
-nnoremap ,m :make<CR>
-nnoremap ,c :cw<CR>
-nnoremap ,n :cn<CR>
-nnoremap ,p :cp<CR>
-nnoremap ,v "+p
-vnoremap ,y "+y
-nnoremap ,s :set spell! \| set spell?<CR>
-nnoremap ,l :set number! \| set number?<CR>
-nnoremap ,g :silent execute '!grep -r --color=always <cword> . \| less -R' \| redraw!<CR>
-nnoremap ,r :if &autowrite \| silent w \| endif \| execute "R" b:runprg <CR>
-
-Bundle 'https://github.com/vim-scripts/Align'
-" AlignMaps#Equals() changed slightly - now uses: AlignCtrl mWp1P1=l =
-vmap ,a \t=
-
-Bundle 'YankRing.vim'
-nnoremap <silent> yr :YRShow<CR>
-
-Bundle 'ZoomWin'
-Bundle 'fugitive.vim'
-Bundle 'EasyMotion'
-
-
-" very experimental
-Bundle 'https://github.com/Lokaltog/vim-powerline'
-set laststatus=2   " Always show the statusline
-set encoding=utf-8 " Necessary to show Unicode glyphs
-let g:Powerline_symbols = 'unicode'
-let g:Powerline_dividers_override = ['>>', '>', '<<', '<']
-
-" Don't always show the statusline
-" set laststatus=1
-
-" Format the statusline
-" set statusline=%<%f%h%m%r%h%w\ \|\ %{strftime(\"%c\",getftime(expand(\"%:p\")))}%=%{HasPaste()}\ %l:%c/%L\ \ %P
-
-function! HasPaste()
-    if &paste
-        return 'PASTE ON'
-    else
-        return ''
-    endif
-endfunction
-
-" better surrounding with e.g. parens
-Bundle 'https://github.com/tpope/vim-surround.git'
-nmap ,2 ys2w
-nmap ,3 ys3w
-nmap ,4 ys4w
-
-" extends CTRL-X/CTRL-A to work with dates and some other things (like ordinals!)
-Bundle 'https://github.com/tpope/vim-speeddating.git'
-
-" better search/replace (in certain cases), allows conversion between
-" camelCase and snake_case
-Bundle 'https://github.com/tpope/vim-abolish.git'
-
-" comment plugins
-Bundle 'https://github.com/tpope/vim-commentary.git'
+Bundle 'tpope/vim-commentary'
+"commenting/uncommenting
+"<Leader><Space>    comment current line
+"<Leader><Space>    comment selected lines
 nmap <Leader><Space> gcc
 vmap <Leader><Space> gc
-autocmd FileType haskell :setlocal commentstring=--\ %s
 
-" makes '.' work with more plugins
-Bundle 'https://github.com/tpope/vim-repeat.git'
+Bundle 'tpope/vim-repeat'
+"makes . work with more plugins
 
-" don't continue the comment from the previous line on 'o'
-autocmd BufEnter * :set formatoptions-=o
+Bundle 'https://github.com/godlygeek/tabular'
+"text alignment
+"<Leader>=     align selected lines on the first =
+vnoremap <Leader>= :Tabularize / = /l0<CR>
 
-Bundle 'LaTeX-Suite-aka-Vim-LaTeX'
-autocmd BufEnter *.tex :set cole=2
-autocmd BufEnter *.tex :hi Conceal ctermbg=black
-" set cocu=nc
+Bundle 'terryma/vim-multiple-cursors'
+"multiple cursor support
+"<C-j>     create new cursor (or find next matching location and create cursor there)
+"<C-p>     remove last cursor and go to previous location
+"<C-x>     remove last cursor and continue to next location
+"<Esc>     exit multi-cursor mode
+let g:multi_cursor_use_default_mapping=0
+let g:multi_cursor_next_key = '<C-j>'
+let g:multi_cursor_prev_key = '<C-p>'
+let g:multi_cursor_skip_key = '<C-x>'
+let g:multi_cursor_quit_key = '<Esc>'
+let g:multi_cursor_exit_from_insert_mode = 0
 
-Bundle 'actionscript.vim'
-au BufNewFile,BufRead *.as  setf actionscript
+Bundle 'Shougo/vimproc.vim'
+"asynchronous execution library needed by e.g. unite
 
-" Bundle 'https://github.com/jpalardy/vim-slime.git'
-let g:slime_target = "tmux"
+Bundle 'Shougo/unite.vim'
+"general purpose item listing/search plugin, primarily used for searching for files
+"<Leader>f        recursively search for files in the current directory
+"(Unite)<C-c>     close unite window
+"(Unite)q         go back once in unite window
+"(Unite)<CR>      open
+"(Unite)t         open in new tab
+"(Unite)p         preview
+"(Unite)<Tab>     perform alternate action
+let g:unite_enable_start_insert = 1
+let g:unite_split_rule = 'botright'
+"  fuzzy matching
+" call unite#filters#matcher_default#use(['matcher_fuzzy'])
+" call unite#filters#sorter_default#use(['sorter_rank'])
+nnoremap <Leader>f :Unite -start-insert file_rec/async<CR>
+nnoremap <Leader>F :Unite -start-insert file<CR>
 
-" Google Go
-autocmd BufEnter *.go :set makeprg=go\ $*\ %
-autocmd BufEnter *.go :nnoremap ,m :Silent make build<CR>
-" autocmd BufEnter *.go :nnoremap ,r :R ./#:r<CR>
-autocmd BufEnter *.go :let b:runprg='./#:r'
-autocmd BufEnter *.go :setlocal errorformat=%f:%l:\ %m
+"  don't quit unite on backspace
+function s:unite_backspace()
+  return col('.') <= (len(unite#get_current_unite().prompt)+1) ?  '' : "\<C-h>"
+endfunction
 
-autocmd BufEnter *.rb :let b:runprg='ruby #'
+autocmd FileType unite call s:unite_my_settings()
+function! s:unite_my_settings()
+  imap <buffer>                <TAB>     <Plug>(unite_select_next_line)
+  imap <buffer>                <C-w>     <Plug>(unite_delete_backward_path)
 
+  nmap <buffer><expr>          t         unite#do_action("tabdrop")
+  nmap <buffer><expr>          <C-t>     unite#do_action("tabdrop")
+  imap <buffer><expr>          <C-t>     unite#do_action("tabdrop")
 
-" This is the shit
-" let g:ctrlp_custom_ignore = {
-"   \ 'dir':  '\.git$\|\.hg$\|\.svn$',
-"   \ }
-" Bundle 'ctrlp.vim'
-" let g:ctrlp_map = '<c-t>'
+  nmap <buffer>                <C-c>     <Plug>(unite_all_exit)
+  imap <buffer>                <C-c>     <Esc><Plug>(unite_all_exit)
+  imap <buffer>                <C-d>     <Esc><Plug>(unite_all_exit)
 
-Bundle 'https://github.com/wincent/Command-T'
-let g:CommandTMatchWindowReverse = 1
-nmap <C-t> :CommandT<CR>
-
-Bundle 'https://github.com/kchmck/vim-coffee-script'
-au BufNewFile,BufRead *.coffee set filetype=coffee
-
-autocmd BufEnter *.flex :setlocal filetype=lex
-
-highlight Special ctermfg=45
-
-" ========= test =======
-" haskell
-Bundle 'https://github.com/Shougo/vimproc'
-Bundle 'https://github.com/eagletmt/ghcmod-vim'
-nnoremap <silent> <Leader>g :GhcModCheck<CR>
-
-" general completion
-Bundle 'https://github.com/Shougo/neocomplcache'
-Bundle 'https://github.com/ujihisa/neco-ghc'
-
-autocmd BufEnter *.hs :NeoComplCacheEnable
-" Disable AutoComplPop. Comment out this line if AutoComplPop is not installed.
-" let g:acp_enableAtStartup = 0
-" Launches neocomplcache automatically on vim startup.
-let g:neocomplcache_enable_at_startup = 1
-" Don't automatically display the popup
-let g:neocomplcache_disable_auto_complete = 1
-" Use smartcase.
-let g:neocomplcache_enable_smart_case = 1
-" Use camel case completion.
-let g:neocomplcache_enable_camel_case_completion = 1
-" Use underscore completion.
-let g:neocomplcache_enable_underbar_completion = 1
-" Sets minimum char length of syntax keyword.
-let g:neocomplcache_min_syntax_length = 4
-
-" let g:neocomplcache_enable_fuzzy_completion = 1
-" let g:neocomplcache_fuzzy_completion_start_length = 2
-
-inoremap <expr><silent> <CR> <SID>my_cr_function()
-function! s:my_cr_function()
-  return pumvisible() ? neocomplcache#close_popup() . "\<CR>" : "\<CR>"
+  imap <silent><buffer><expr>  <BS>      <SID>unite_backspace()
+  imap <silent><buffer><expr>  <C-h>     <SID>unite_backspace()
 endfunction
 
 
-" GHCi Interaction
-Bundle 'https://github.com/vim-scripts/Superior-Haskell-Interaction-Mode-SHIM'
-autocmd FileType haskell :nnoremap <buffer> <Leader>r :w<CR>:GhciFile<CR>
-autocmd FileType haskell :vnoremap <buffer> <Leader>r :GhciRange<CR>
+Bundle 'https://github.com/Shougo/neocomplete'
+"autocompletion plugin
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+"  only start completing if typing pauses
+let g:neocomplete#enable_cursor_hold_i = 1
+"  time in ms that typing has to pause before completion starts
+let g:neocomplete#cursor_hold_i_time = 400
 
-" Alignment
-Bundle 'https://github.com/godlygeek/tabular'
-" AddTabularPattern first_equals /^[^=]*\zs=
-autocmd BufEnter *.hs :AddTabularPattern! equality / = /l0
+"  plugin key-mappings.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+inoremap <expr><C-e>     neocomplete#cancel_popup()
 
-" syntax checking
-Bundle 'https://github.com/scrooloose/syntastic'
-let g:syntastic_mode_map = { 'mode': 'passive',
-                           \ 'active_filetypes': ['c'],
-                           \ 'passive_filetypes': [] }
+"  <CR>: close popup and save indent.
+inoremap <expr><silent> <CR> <SID>my_cr_function()
+function! s:my_cr_function()
+  return neocomplete#smart_close_popup() . "\<CR>"
+endfunction
 
-" type insertion, haddock lookup
-Bundle 'https://github.com/ehamberg/haskellmode-vim.git'
-let g:haddock_browser = "open"
-let g:haddock_indexfiledir = "~/.vim/"
-autocmd BufEnter *.hs :compiler ghc
-let g:haddock_browser_callformat = "%s file://%s"
-
-" vim2hs (BIG)
-" Bundle 'https://github.com/dag/vim2hs'
-
-" tags
-Bundle 'https://github.com/majutsushi/tagbar'
-Bundle 'https://github.com/bitc/lushtags'
-let g:tagbar_compact = 1
-nnoremap <silent> <Leader>' :TagbarToggle<CR>
-
-" indent guides
-Bundle 'https://github.com/nathanaelkane/vim-indent-guides'
-" let g:indent_guides_guide_size = 1
-let g:indent_guides_auto_colors = 0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=232
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=234
-
-Bundle 'sudo.vim'
-
-" clojure
-Bundle 'https://github.com/vim-scripts/VimClojure'
-
-" switch to and from header files
-Bundle 'https://github.com/vim-scripts/a.vim'
-nmap <Leader>h :A<CR>
-nmap <Leader>H :AV<CR>
-
-" experimental
-Bundle 'https://github.com/goldfeld/vim-seek'
-
-" Scala
-Bundle 'derekwyatt/vim-scala'
-" Bundle 'https://github.com/scala/scala-dist', {'rtp': 'tool-support/src/vim'}
-
-" git gutter
-" Bundle 'https://github.com/airblade/vim-gitgutter'
-" highlight clear SignColumn
-
-" Bundle 'https://github.com/Valloric/YouCompleteMe'
-" let g:ycm_add_preview_to_completeopt = 0
-" let g:ycm_autoclose_preview_window_after_completion = 0
-" let g:ycm_key_invoke_completion = '<C-Y>'
-" nmap <leader>y :YcmForceCompileAndDiagnostics<CR>
-" set completeopt=menuone
-" let g:ycm_filetypes_to_completely_ignore = {
-"       \ 'notes' : 1,
-"       \ 'markdown' : 1,
-"       \ 'text' : 1,
-"       \ 'ruby' : 1,
-"       \ 'haskell' : 1,
-"       \}
-
-Bundle 'git://github.com/digitaltoad/vim-jade.git'
-Bundle 'https://github.com/timcharper/textile.vim'
-
-Bundle 'https://github.com/mileszs/ack.vim'
-
-command! -nargs=1 Hdoc !hoogle --info --color <f-args>
-nmap <Leader>k :echo system("hoogle " . shellescape(expand("<cWORD>")))<CR>
-nmap <Leader>K :echo system("hoogle --info " . shellescape(expand("<cWORD>")))<CR>
-
-Bundle 'https://github.com/jceb/vim-orgmode'
-let g:org_heading_shade_leading_stars = 0
-
+"  enable omni completion for languages neocomplete knows about
+autocmd FileType css           setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript    setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python        setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml           setlocal omnifunc=xmlcomplete#CompleteTags
 
 
 Bundle 'https://github.com/rosenfeld/conque-term'
+"turns a vim buffer into a terminal emulator
+"ConqueTermSplit (command)    run (command) in a split window
+"ConqueTermTab (command)      run (command) in a new tab
+"<Leader>t                    send selected text to most recently created buffer
+"<Leader>r                    open/reload current file in the appropriate interpreter
+let g:ConqueTerm_StartMessages = 0
 let g:ConqueTerm_CWInsert = 1
-let g:ConqueTerm_SendVisKey = ';f'
+let g:ConqueTerm_SendVisKey = "<Leader>t"
+nmap <Leader>r :call <SID>reload_interpreter()<CR>
+
+function s:reload_interpreter()
+  let l:runprg = b:runprg
+  write
+  if exists("g:term")
+    call g:term.focus()
+    quit
+  endif
+  let g:term=conque_term#open(l:runprg . ' '  . expand('%'), ['tabnew'], 0)
+endfunction
+
+
+Bundle 'majutsushi/tagbar'
+"compact function/variable list
+"<Leader>'              open/close tagbar
+"  (commented out) don't display tagbar help
+" let g:tagbar_compact = 1
+nnoremap <silent> <Leader>' :TagbarToggle<CR>
+
+
+Bundle 'nathanaelkane/vim-indent-guides'
+"more easily see indent levels
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_default_mapping = 0                 "don't add any mappings
+let g:indent_guides_guide_size = 1
+let g:indent_guides_exclude_filetypes = ['unite']       "don't highlight unite buffers
+let g:indent_guides_auto_colors = 0                     "set colors manually
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=black
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=235
+
+"===== C =====
+Bundle 'a.vim'
+"quickly switch to and from header files
+"<Leader>h            switch to/from header in current window
+"<Leader>H            switch to/from header in new vertical split
+nmap <Leader>h :A<CR>
+nmap <Leader>H :AV<CR>
+
+"===== Python =====
+autocmd FileType python :let b:runprg='bpython -i'
+
+"===== Haskell =====
+autocmd FileType haskell :setlocal commentstring=--\ %s
+autocmd FileType haskell :let b:runprg='ghci'
+
+Bundle 'bitc/lushtags'
+"tagbar support for haskell
+
+command! -nargs=1 Hdoc !hoogle --info --color <f-args>
+nmap K :echo system("hoogle --info " . shellescape(expand("<cWORD>")))<CR>
