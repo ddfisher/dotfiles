@@ -1,5 +1,6 @@
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
+DISABLE_AUTO_UPDATE=true
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -65,9 +66,10 @@ bindkey '^T' menu-expand-or-complete
 bindkey -M menuselect '^I' accept-line
 
 export EDITOR="vim"
+export GOPATH="/Users/david/gocode"
 
 # Customize to your needs...
-export PATH=/Users/david/.cabal/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/Users/david/.cabal/bin:/usr/texbin:/Users/david/web/phacility/arcanist/bin:/Users/david/ec2-api-tools/bin:/usr/local/mysql/bin:/Users/david/go/bin:/usr/local/Cellar/ruby/1.9.3-p125/bin
+export PATH=/Users/david/.cabal/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/Users/david/.cabal/bin:/usr/texbin:/Users/david/web/phacility/arcanist/bin:/Users/david/ec2-api-tools/bin:/usr/local/mysql/bin:/usr/local/Cellar/ruby/1.9.3-p125/bin:/usr/local/go/bin
 
 # OpenCV
 export PYTHONPATH="/usr/local/lib/python2.7/site-packages:$PYTHONPATH"
