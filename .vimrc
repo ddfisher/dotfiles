@@ -7,9 +7,6 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 Bundle 'gmarik/vundle'
 
-filetype plugin indent on             "enable filetype detection for indents and plugins
-syntax enable                         "enable syntax highlighting
-
 Bundle 'gmarik/ingretu'
 colorscheme ingretu
 
@@ -255,20 +252,27 @@ Bundle 'https://github.com/rosenfeld/conque-term'
 "ConqueTermTab (command)      run (command) in a new tab
 "<Leader>t                    send selected text to most recently created buffer
 "<Leader>r                    open/reload current file in the appropriate interpreter
+"<Leader>z                    open zsh in a tab
 let g:ConqueTerm_StartMessages = 0
-let g:ConqueTerm_CWInsert = 1
+" let g:ConqueTerm_FastMode = 1
+let g:ConqueTerm_InsertOnEnter = 0
 let g:ConqueTerm_SendVisKey = "<Leader>t"
 nmap <Leader>r :call <SID>reload_interpreter()<CR>
+nmap <Leader>z :ConqueTermTab zsh<CR>
 
 function s:reload_interpreter()
   let l:runprg = b:runprg
   write
   if exists("g:term")
     call g:term.focus()
+		call g:term.close()
     quit
   endif
   let g:term=conque_term#open(l:runprg . ' '  . expand('%'), ['tabnew'], 0)
+  stopinsert
 endfunction
+
+autocmd FileType conque_term NeoCompleteLock
 
 
 Bundle 'majutsushi/tagbar'
@@ -281,13 +285,18 @@ nnoremap <silent> <Leader>' :TagbarToggle<CR>
 
 Bundle 'nathanaelkane/vim-indent-guides'
 "more easily see indent levels
-let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_enable_on_vim_startup = 0
 let g:indent_guides_default_mapping = 0                 "don't add any mappings
 let g:indent_guides_guide_size = 1
-let g:indent_guides_exclude_filetypes = ['unite']       "don't highlight unite buffers
+let g:indent_guides_exclude_filetypes = ['unite', 'haskell', 'conque_term', 'help']
 let g:indent_guides_auto_colors = 0                     "set colors manually
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=black
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=235
+
+Bundle 'jiangmiao/auto-pairs'
+"automatically close pairs (e.g. parens)
+"(insert mode after opening a pair)<C-f>        wrap pair around following pair/word
+let g:AutoPairsShortcutFastWrap="<C-f>"
 
 "===== C =====
 Bundle 'a.vim'
@@ -309,3 +318,28 @@ Bundle 'bitc/lushtags'
 
 command! -nargs=1 Hdoc !hoogle --info --color <f-args>
 nmap K :echo system("hoogle --info " . shellescape(expand("<cWORD>")))<CR>
+
+"==== Golang ====
+autocmd FileType go :let b:runprg='go run'
+
+autocmd FileType go :call s:go_setup()
+
+function s:go_setup()
+  set noexpandtab
+	nnoremap <Leader>= :Fmt<CR>
+endfunction
+
+"syntax highlighting, indents, etc.  mirror of official repo
+Bundle 'jnwhiteh/vim-golang'
+
+
+"==== Final Commands ====
+filetype plugin indent on             "enable filetype detection for indents and plugins
+syntax enable                         "enable syntax highlighting
+
+"==== Plugins Under Consideration ====
+" Gundo: (graph vim undo tree) http://sjl.bitbucket.org/gundo.vim/
+" Python-mode: (comprehensive python mode): https://github.com/klen/python-mode
+" vim-airline: (lightweight statusline with lots of integrations): https://github.com/bling/vim-airline
+" vim-seek: (like f but for two characters): https://github.com/goldfeld/vim-seek
+" syntastic: (realtime compile errors): https://github.com/scrooloose/syntastic
