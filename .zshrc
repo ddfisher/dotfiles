@@ -66,7 +66,7 @@ bindkey '^T' menu-expand-or-complete
 bindkey -M menuselect '^I' accept-line
 
 export EDITOR="vim"
-export GOPATH="/Users/david/gocode"
+export GOPATH="/Users/david/code/go"
 
 # Customize to your needs...
 export PATH=/Users/david/.cabal/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/Users/david/.cabal/bin:/usr/texbin:/Users/david/web/phacility/arcanist/bin:/Users/david/ec2-api-tools/bin:/usr/local/mysql/bin:/usr/local/Cellar/ruby/1.9.3-p125/bin:/usr/local/go/bin
