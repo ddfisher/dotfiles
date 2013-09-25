@@ -271,7 +271,6 @@ function s:reload_interpreter()
     quit
   endif
   let g:term=conque_term#open(l:runprg . ' '  . expand('%'), ['tabnew'], 0)
-  stopinsert
 endfunction
 
 autocmd FileType conque_term NeoCompleteLock
