@@ -320,6 +320,12 @@ autocmd FileType python :let b:runprg='bpython -i'
 autocmd FileType haskell :setlocal commentstring=--\ %s
 autocmd FileType haskell :let b:runprg='ghci'
 
+Bundle 'dag/vim2hs'
+"indentation, better syntax highlighting, and more
+
+Bundle 'ujihisa/neco-ghc'
+"autocomplete
+
 Bundle 'bitc/lushtags'
 "tagbar support for haskell
 
