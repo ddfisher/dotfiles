@@ -108,6 +108,10 @@ Bundle 'chrisbra/Recover.vim'
 "give option to diff recovery files
 ":FinishRecovery       deletes swapfile and closes diff window
 
+Bundle 'sjl/gundo.vim'
+"visualize undo tree
+":GundoToggle          display undo tree in split window
+
 "===== General Programming =====
 set showmatch                         "briefly shows matching brackets when closed
 set matchtime=1                       "time for match to be shown in tenths of a second
@@ -354,7 +358,6 @@ filetype plugin indent on             "enable filetype detection for indents and
 syntax enable                         "enable syntax highlighting
 
 "==== Plugins Under Consideration ====
-" Gundo: (graph vim undo tree) http://sjl.bitbucket.org/gundo.vim/
 " Python-mode: (comprehensive python mode): https://github.com/klen/python-mode
 " vim-airline: (lightweight statusline with lots of integrations): https://github.com/bling/vim-airline
 " vim-seek: (like f but for two characters): https://github.com/goldfeld/vim-seek
