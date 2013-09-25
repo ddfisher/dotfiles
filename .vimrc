@@ -345,6 +345,9 @@ endfunction
 "syntax highlighting, indents, etc.  mirror of official repo
 Bundle 'jnwhiteh/vim-golang'
 
+"autocompletion
+Bundle 'Blackrush/vim-gocode'
+
 
 "==== Final Commands ====
 filetype plugin indent on             "enable filetype detection for indents and plugins
