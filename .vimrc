@@ -299,6 +299,12 @@ Bundle 'jiangmiao/auto-pairs'
 "(insert mode after opening a pair)<C-f>        wrap pair around following pair/word
 let g:AutoPairsShortcutFastWrap="<C-f>"
 
+Bundle 'rizzatti/funcoo.vim'
+Bundle 'rizzatti/dash.vim'
+"Dash integration - fast function, etc lookup for mac
+"<Leader>k            search for keyword under cursor in Dash
+nmap <Leader>k <Plug>DashSearch
+
 "===== C =====
 Bundle 'a.vim'
 "quickly switch to and from header files
