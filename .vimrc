@@ -76,6 +76,8 @@ function NoteEdit()
   highlight incompleteItem ctermfg=202
   highlight partialItem    ctermfg=14
   highlight completeItem   ctermfg=68
+
+  NeoCompleteLock
 endfunction
 
 au BufRead,BufNewFile *.note call NoteEdit()
