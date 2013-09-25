@@ -330,7 +330,7 @@ Bundle 'bitc/lushtags'
 "tagbar support for haskell
 
 command! -nargs=1 Hdoc !hoogle --info --color <f-args>
-nmap K :echo system("hoogle --info " . shellescape(expand("<cWORD>")))<CR>
+autocmd FileType haskell nmap <buffer> K :echo system("hoogle --info " . shellescape(expand("<cWORD>")))<CR>
 
 "==== Golang ====
 autocmd FileType go :let b:runprg='go run'
