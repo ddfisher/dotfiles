@@ -19,7 +19,7 @@ imap JK <esc>
 "===== General Setup =====
 let mapleader = ";"
 let g:mapleader = ";"
-let maplocalleader = ";"
+let maplocalleader = ","
 
 set title                             "have vim set terminal title
 set mouse=a                           "mouse use is occasionally convenient
@@ -186,6 +186,8 @@ Bundle 'Shougo/vimproc.vim'
 Bundle 'Shougo/unite.vim'
 "general purpose item listing/search plugin, primarily used for searching for files
 "<Leader>f        recursively search for files in the current directory
+"<Leader>F        search for recently used files
+"<Leader>g        grep through files
 "(Unite)<C-c>     close unite window
 "(Unite)q         go back once in unite window
 "(Unite)<CR>      open
@@ -198,7 +200,9 @@ let g:unite_split_rule = 'botright'
 " call unite#filters#matcher_default#use(['matcher_fuzzy'])
 " call unite#filters#sorter_default#use(['sorter_rank'])
 nnoremap <Leader>f :Unite -start-insert file_rec/async<CR>
-nnoremap <Leader>F :Unite -start-insert file<CR>
+nnoremap <Leader>F :Unite -start-insert file_mru<CR>
+nnoremap <Leader>g :Unite -start-insert grep:.<CR>
+nnoremap <Leader>G :UniteWithCursorWord -start-insert grep:.<CR>
 
 "  don't quit unite on backspace
 function s:unite_backspace()
@@ -238,7 +242,7 @@ inoremap <expr><C-g>     neocomplete#undo_completion()
 inoremap <expr><C-l>     neocomplete#complete_common_string()
 inoremap <expr><C-e>     neocomplete#cancel_popup()
 
-"  <CR>: close popup and save indent.
+ " <CR>: close popup and save indent.
 inoremap <expr><silent> <CR> <SID>my_cr_function()
 function! s:my_cr_function()
   return neocomplete#smart_close_popup() . "\<CR>"
@@ -298,10 +302,6 @@ let g:indent_guides_auto_colors = 0                     "set colors manually
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=black
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=235
 
-Bundle 'jiangmiao/auto-pairs'
-"automatically close pairs (e.g. parens)
-"(insert mode after opening a pair)<C-f>        wrap pair around following pair/word
-let g:AutoPairsShortcutFastWrap="<C-f>"
 
 Bundle 'rizzatti/funcoo.vim'
 Bundle 'rizzatti/dash.vim'
@@ -362,3 +362,17 @@ syntax enable                         "enable syntax highlighting
 " vim-airline: (lightweight statusline with lots of integrations): https://github.com/bling/vim-airline
 " vim-seek: (like f but for two characters): https://github.com/goldfeld/vim-seek
 " syntastic: (realtime compile errors): https://github.com/scrooloose/syntastic
+
+
+" delimitmate has problems with undo and '.', as do most (all?) other plugins
+" of its type
+" Bundle 'Raimondi/delimitMate'
+" "automatically close pairs (e.g. parens)
+" "(insert mode after opening a pair)<C-f>        jump to outside of pair
+" imap <C-f> <Plug>delimitMateS-Tab
+" let g:delimitMate_expand_cr=1
+" let g:delimitMate_expand_space=1
+" let g:delimitMate_balance_matchpairs=1
+" autocmd FileType python let b:delimitMate_nesting_quotes = ['"']
+
+
