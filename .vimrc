@@ -23,7 +23,7 @@ let maplocalleader = ","
 
 set title                             "have vim set terminal title
 set mouse=a                           "mouse use is occasionally convenient
-set tabpagemax=25                     "open up to this many tabs when called with -p
+set tabpagemax=100                     "open up to this many tabs when called with -p
 set wildmode=list:longest             "enable shell-like tab completion in ex commands
 set history=1000                      "history entries to remember (ex command, search, etc)
 set timeoutlen=500                    "time in ms before partial commands time out
@@ -57,6 +57,9 @@ set splitright                        "new windows created to the right of the c
 nnoremap <Leader>p "+p
 vnoremap <Leader>y "+y
 
+"easier mapping for last edited location
+nmap <Leader>. `.
+
 "toggle spell checking
 nnoremap <Leader>s :set spell! \| set spell?<CR>
 
@@ -69,9 +72,9 @@ function NoteEdit()
   setlocal textwidth=80
   setlocal autoindent
   setlocal comments=fb:-,fb:*,fb:[\ ],fb:[x],fb:[-]
-  syntax match incompleteItem "^\s*\[ \] \zs.*"
-  syntax match partialItem    "^\s*\[-\] \zs.*"
-  syntax match completeItem   "^\s*\[x\] \zs.*"
+  syntax match incompleteItem "^\s*\[ \] \zs\(\( *[^ ]\)*\( \n\)\?\)\+"
+  syntax match partialItem    "^\s*\[-\] \zs\(\( *[^ ]\)*\( \n\)\?\)\+"
+  syntax match completeItem   "^\s*\[x\] \zs\(\( *[^ ]\)*\( \n\)\?\)\+"
 
   highlight incompleteItem ctermfg=202
   highlight partialItem    ctermfg=14
@@ -112,6 +115,20 @@ Bundle 'sjl/gundo.vim'
 "visualize undo tree
 ":GundoToggle          display undo tree in split window
 
+Bundle 'bling/vim-airline'
+"nice statusline
+set laststatus=2
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+let g:airline_left_sep = ''
+let g:airline_right_sep = ''
+let g:airline_symbols.branch = '⎇ '
+let g:airline_symbols.whitespace = 'Ξ'
+
+"==== GVim ====
+set gfn=Inconsolata:h18
+
 "===== General Programming =====
 set showmatch                         "briefly shows matching brackets when closed
 set matchtime=1                       "time for match to be shown in tenths of a second
@@ -127,6 +144,10 @@ vnoremap <Leader>q gq
 set foldmethod=syntax
 set foldnestmax=1                     "only ever have one level of folds
 set foldlevelstart=1                  "start with everything visible
+
+"diffs
+"<Leader>d   diff all split windows
+nmap <Leader>d :windo diffthis \| windo diffupdate<CR>
 
 "===== Programming Plugins =====
 Bundle 'tpope/vim-fugitive'
@@ -162,47 +183,42 @@ vmap <Leader><Space> gc
 Bundle 'tpope/vim-repeat'
 "makes . work with more plugins
 
+Bundle 'tpope/vim-dispatch'
+"asynchronous dispatch/making
+
 Bundle 'https://github.com/godlygeek/tabular'
 "text alignment
 "<Leader>=     align selected lines on the first =
 vnoremap <Leader>= :Tabularize / = /l0<CR>
 
-Bundle 'terryma/vim-multiple-cursors'
-"multiple cursor support
-"<C-j>     create new cursor (or find next matching location and create cursor there)
-"<C-p>     remove last cursor and go to previous location
-"<C-x>     remove last cursor and continue to next location
-"<Esc>     exit multi-cursor mode
-let g:multi_cursor_use_default_mapping=0
-let g:multi_cursor_next_key = '<C-j>'
-let g:multi_cursor_prev_key = '<C-p>'
-let g:multi_cursor_skip_key = '<C-x>'
-let g:multi_cursor_quit_key = '<Esc>'
-let g:multi_cursor_exit_from_insert_mode = 0
+Bundle 'tommcdo/vim-exchange'
+"easy text exchange operator
+" cx{motion}      mark first text for exchange/perform exchange
+" <Visual>X       mark first text for exchange/perform exchange
+
+Bundle 'b4winckler/vim-angry'
+"argument text objects
 
 Bundle 'Shougo/vimproc.vim'
 "asynchronous execution library needed by e.g. unite
 
 Bundle 'Shougo/unite.vim'
+Bundle 'Shougo/neomru.vim'
 "general purpose item listing/search plugin, primarily used for searching for files
 "<Leader>f        recursively search for files in the current directory
 "<Leader>F        search for recently used files
-"<Leader>g        grep through files
+"<Leader>g        grep through files for word under cursor
+"<Leader>G        grep through files
 "(Unite)<C-c>     close unite window
 "(Unite)q         go back once in unite window
 "(Unite)<CR>      open
 "(Unite)t         open in new tab
 "(Unite)p         preview
 "(Unite)<Tab>     perform alternate action
-let g:unite_enable_start_insert = 1
-let g:unite_split_rule = 'botright'
-"  fuzzy matching
-" call unite#filters#matcher_default#use(['matcher_fuzzy'])
-" call unite#filters#sorter_default#use(['sorter_rank'])
 nnoremap <Leader>f :Unite -start-insert file_rec/async<CR>
 nnoremap <Leader>F :Unite -start-insert file_mru<CR>
-nnoremap <Leader>g :Unite -start-insert grep:.<CR>
-nnoremap <Leader>G :UniteWithCursorWord -start-insert grep:.<CR>
+nnoremap <Leader>g :UniteWithCursorWord -start-insert grep:.<CR>
+nnoremap <Leader>G :Unite -start-insert grep:.<CR>
 
 "  don't quit unite on backspace
 function s:unite_backspace()
@@ -211,12 +227,11 @@ endfunction
 
 autocmd FileType unite call s:unite_my_settings()
 function! s:unite_my_settings()
-  imap <buffer>                <TAB>     <Plug>(unite_select_next_line)
   imap <buffer>                <C-w>     <Plug>(unite_delete_backward_path)
 
-  nmap <buffer><expr>          t         unite#do_action("tabdrop")
-  nmap <buffer><expr>          <C-t>     unite#do_action("tabdrop")
-  imap <buffer><expr>          <C-t>     unite#do_action("tabdrop")
+  nmap <buffer><expr>          t         unite#do_action("tabopen")
+  nmap <buffer><expr>          <C-t>     unite#do_action("tabopen")
+  imap <buffer><expr>          <C-t>     unite#do_action("tabopen")
 
   nmap <buffer>                <C-c>     <Plug>(unite_all_exit)
   imap <buffer>                <C-c>     <Esc><Plug>(unite_all_exit)
@@ -225,6 +240,31 @@ function! s:unite_my_settings()
   imap <silent><buffer><expr>  <BS>      <SID>unite_backspace()
   imap <silent><buffer><expr>  <C-h>     <SID>unite_backspace()
 endfunction
+
+let g:unite_enable_start_insert = 1
+let g:unite_split_rule = 'botright'
+let g:unite_source_rec_async_command = 'ag --nocolor --nogroup --hidden -g ""'
+" don't limit the number of files to search through
+let g:unite_source_rec_min_cache_files = 1000
+let g:unite_source_file_rec_max_cache_files = 10000
+let g:unite_source_rec_max_cache_files = 10000
+call unite#custom#source('file_mru,file_rec,file_rec/async,grepocate',
+        \ 'max_candidates', 10000)
+
+if executable('ag')
+  " Use ag in unite grep source.
+  let g:unite_source_grep_command = 'ag'
+  let g:unite_source_grep_default_opts =
+        \ '--line-numbers --nocolor --nogroup --hidden --ignore ' .
+        \  '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+  let g:unite_source_grep_recursive_opt = ''
+elseif executable('ack-grep')
+  " Use ack in unite grep source.
+  let g:unite_source_grep_command = 'ack-grep'
+  let g:unite_source_grep_default_opts =
+        \ '--no-heading --no-color -a -H'
+  let g:unite_source_grep_recursive_opt = ''
+endif
 
 
 Bundle 'https://github.com/Shougo/neocomplete'
@@ -275,7 +315,7 @@ function s:reload_interpreter()
   write
   if exists("g:term")
     call g:term.focus()
-		call g:term.close()
+    call g:term.close()
     quit
   endif
   let g:term=conque_term#open(l:runprg . ' '  . expand('%'), ['tabnew'], 0)
@@ -287,9 +327,9 @@ autocmd FileType conque_term NeoCompleteLock
 Bundle 'majutsushi/tagbar'
 "compact function/variable list
 "<Leader>'              open/close tagbar
-"  (commented out) don't display tagbar help
-" let g:tagbar_compact = 1
 nnoremap <silent> <Leader>' :TagbarToggle<CR>
+"leave tags sorted by order of appearence in file
+let g:tagbar_sort = 0
 
 
 Bundle 'nathanaelkane/vim-indent-guides'
@@ -309,6 +349,12 @@ Bundle 'rizzatti/dash.vim'
 "<Leader>k            search for keyword under cursor in Dash
 nmap <Leader>k <Plug>DashSearch
 
+Bundle 'scrooloose/syntastic'
+"realtime syntax checking
+let g:syntastic_check_on_open=1
+let g:syntastic_check_on_wq=0
+let g:syntastic_ignore_files=['.htm$']
+
 "===== C =====
 Bundle 'a.vim'
 "quickly switch to and from header files
@@ -319,10 +365,13 @@ nmap <Leader>H :AV<CR>
 
 "===== Python =====
 autocmd FileType python :let b:runprg='bpython -i'
+Bundle 'klen/python-mode'
+" comprehensive python mode
 
 "===== Haskell =====
-autocmd FileType haskell :setlocal commentstring=--\ %s
 autocmd FileType haskell :let b:runprg='ghci'
+
+let g:haskell_conceal=0
 
 Bundle 'dag/vim2hs'
 "indentation, better syntax highlighting, and more
@@ -332,6 +381,8 @@ Bundle 'ujihisa/neco-ghc'
 
 Bundle 'bitc/lushtags'
 "tagbar support for haskell
+
+autocmd FileType haskell :setlocal cole=0
 
 command! -nargs=1 Hdoc !hoogle --info --color <f-args>
 autocmd FileType haskell nmap <buffer> K :echo system("hoogle --info " . shellescape(expand("<cWORD>")))<CR>
@@ -343,29 +394,84 @@ autocmd FileType go :call s:go_setup()
 
 function s:go_setup()
   set noexpandtab
-	nnoremap <Leader>= :Fmt<CR>
+  nnoremap <Leader>= :Fmt<CR>
 endfunction
 
-"syntax highlighting, indents, etc.  mirror of official repo
 Bundle 'jnwhiteh/vim-golang'
+"syntax highlighting, indents, etc.  mirror of official repo
 
-"autocompletion
 Bundle 'Blackrush/vim-gocode'
+"autocompletion
 
+"==== Java ====
+autocmd FileType java :nmap <buffer> <Leader>k :JavaDocPreview<CR>
+"eclim
+let g:EclimCompletionMethod = 'omnifunc'
+let g:EclimJavaHierarchyDefaultAction = 'tabnew'
+let g:EclimJavaCallHierarchyDefaultAction = 'tabnew'
+
+autocmd FileType javadoc_preview :set linebreak
+
+"==== Javascript ====
+autocmd FileType javascript :call s:javascript_setup()
+
+" Bundle "pangloss/vim-javascript"
+"better syntax and indent for javascript
+
+Bundle 'heavenshell/vim-jsdoc'
+" JsDoc comment insertion
+nmap <Leader>l :JsDoc<CR>
+let g:jsdoc_allow_input_prompt = 0
+let g:jsdoc_default_mapping = 0
+
+function s:javascript_setup()
+  set tabstop=4                         "size of a tab
+  set softtabstop=4                     "size of a tab when editing
+  set shiftwidth=4                      "spaces to use for each autoindent
+  AddTabularPipeline! docblock /@.*{/
+    \   tabular#TabularizeStrings(a:lines, '^[^{]*\zs{', 'l1c0l0')
+    \ | tabular#TabularizeStrings(a:lines, '^[^@]*@\(return[^}]*}\|param[^}]*}\s*\h\w*\)\zs', 'l0l5l0')
+endfunction
+
+command FormatJSON %!python -m json.tool
+
+"==== Less ====
+Bundle 'groenewege/vim-less'
+"highlighting, completion
+
+"==== Markdown ====
+Bundle 'tpope/vim-markdown'
+Bundle 'suan/vim-instant-markdown'
+"instant markdown updates
+" :InstantMarkdownPreview
+let g:instant_markdown_slow = 1
+let g:instant_markdown_autostart = 0
+
+"=== Experimental ===
 
 "==== Final Commands ====
 filetype plugin indent on             "enable filetype detection for indents and plugins
 syntax enable                         "enable syntax highlighting
 
-"==== Plugins Under Consideration ====
-" Python-mode: (comprehensive python mode): https://github.com/klen/python-mode
-" vim-airline: (lightweight statusline with lots of integrations): https://github.com/bling/vim-airline
-" vim-seek: (like f but for two characters): https://github.com/goldfeld/vim-seek
-" syntastic: (realtime compile errors): https://github.com/scrooloose/syntastic
+"==== Disabled Plugins ====
+" Bundle 'airblade/vim-gitgutter'
+" "show git changes in gutter
+" -> Tried it, but didn't find it particularly useful
 
+" Bundle 'terryma/vim-multiple-cursors'
+" "multiple cursor support
+" "<C-j>     create new cursor (or find next matching location and create cursor there)
+" "<C-p>     remove last cursor and go to previous location
+" "<C-x>     remove last cursor and continue to next location
+" "<Esc>     exit multi-cursor mode
+" let g:multi_cursor_use_default_mapping = 0
+" let g:multi_cursor_next_key = '<C-j>'
+" let g:multi_cursor_prev_key = '<C-p>'
+" let g:multi_cursor_skip_key = '<C-x>'
+" let g:multi_cursor_quit_key = '<Esc>'
+" let g:multi_cursor_exit_from_insert_mode = 0
+" -> Too buggy/annoying to use to be actually useful
 
-" delimitmate has problems with undo and '.', as do most (all?) other plugins
-" of its type
 " Bundle 'Raimondi/delimitMate'
 " "automatically close pairs (e.g. parens)
 " "(insert mode after opening a pair)<C-f>        jump to outside of pair
@@ -374,5 +480,10 @@ syntax enable                         "enable syntax highlighting
 " let g:delimitMate_expand_space=1
 " let g:delimitMate_balance_matchpairs=1
 " autocmd FileType python let b:delimitMate_nesting_quotes = ['"']
+" -> delimitmate has problems with undo and '.', as do most (all?) other plugins of its type
 
 
+"==== Plugins Under Consideration ====
+" tpope/vim-unimpaired: pairs of handy bracket mappings
+" vim-seek: (like f but for two characters): https://github.com/goldfeld/vim-seek
+" Better whitespace (highlights trailing whitespace): https://github.com/ntpeters/vim-better-whitespace
